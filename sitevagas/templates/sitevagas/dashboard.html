@@ -1,0 +1,102 @@
+{% extends "base.html" %} 
+
+{% block content %}
+<div class="container mt-2">
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <a href="{% url 'home' %}" class="btn btn-secondary">
+                Voltar 
+            </a>
+        </div>
+    </div>
+
+    
+    <h2>{{ titulo }} {{ user.empresa.nome_empresa }}</h2>
+    <hr>
+    <div class="row mb-5">
+        <div class="col-md-10 mx-auto">
+            <h3>Vagas Criadas por Mês</h3>
+            <canvas id="vagasChart"></canvas>
+        </div>
+    </div>
+    
+    <hr>
+
+    <div class="row mt-5 mb-5">
+        <div class="col-md-10 mx-auto">
+            <h3>Candidaturas Recebidas por Mês</h3>
+            <canvas id="candidaturasChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        
+        const dataUrl = '{% url "dashboard-data" %}';
+
+        function criarGrafico(ctx, tipo, labels, data, tituloLabel) {
+            new Chart(ctx, {
+                type: tipo,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: tituloLabel,
+                        data: data,
+                        backgroundColor: tipo === 'bar' ? 'rgba(54, 162, 235, 0.2)' : '#4bc0c033',
+                        borderColor: tipo === 'bar' ? '#0f9f82ff' : '#0f9f82ff',
+                        borderWidth: 1,
+                        fill: tipo === 'line'
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                        
+                                stepSize: 1 
+                            }
+                        }
+                    },
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                }
+            });
+        }
+
+      
+        fetch(dataUrl)
+            .then(data => {
+                
+                const vagasCtx = document.getElementById('vagasChart').getContext('2d');
+                criarGrafico(
+                    vagasCtx, 
+                    'bar',
+                    data.vagas.labels, 
+                    data.vagas.data, 
+                    'Nº de Vagas Criadas'
+                );
+
+                const candidaturasCtx = document.getElementById('candidaturasChart').getContext('2d');
+                criarGrafico(
+                    candidaturasCtx, 
+                    'line',
+                    data.candidaturas.labels, 
+                    data.candidaturas.data, 
+                    'Nº de Candidaturas Recebidas'
+                );
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+    });
+</script>
+{% endblock %}

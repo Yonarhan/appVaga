@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Bem-vindo{% endblock %}
+
+{% block content %}
+    <style>
+        .centered-container {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; height: 60vh; text-align: center;
+        }
+        .main-title { font-size: 2.5em; margin-bottom: 40px; }
+        .btn-large { padding: 15px 35px; font-size: 1.1em; }
+    </style>
+
+    <div class="centered-container">
+        <h2 class="main-title">Bem-vindo à Senior Vagas</h2>
+        <div class="landing-buttons">
+            {% if not user.is_authenticated %}
+                <a href="{% url 'login' %}" class="btn btn-red btn-large" style="background-color: #0f9f82ff;">Login</a>
+            {% endif %}
+            <a href="{% url 'vagas-lista' %}" class="btn btn-red btn-large" style="background-color: #0f9f82ff;">Vagas Cadastradas</a>
+            {% if is_empresa %}
+                <a href="{% url 'dashboard' %}" class="btn btn-red btn-large" style="background-color: #1a4d3eff; margin-left: 10px;">
+                    Dashboard da Empresa
+                </a>
+            {% endif %}
+        
+        </div>
+    </div>
+
+    
+{% endblock %}

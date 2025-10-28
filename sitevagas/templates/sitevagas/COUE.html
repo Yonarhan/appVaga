@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastro - Escolha{% endblock %}
+
+{% block content %}
+    <div class="form-container" style="max-width: 400px; margin: auto;">
+        <h2>Cadastro</h2>
+        <div style="margin-bottom: 20px;">
+            <a href="{% url 'registro-candidato' %}" class="btn btn-light">Candidato</a>
+            <a href="{% url 'registro-empresa' %}" class="btn btn-light">Empresa</a>
+        </div>
+        <a href="{% url 'home' %}" class="btn btn-red">Voltar</a>
+    </div>
+{% endblock %}

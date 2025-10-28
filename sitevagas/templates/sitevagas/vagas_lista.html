@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}Vagas Cadastradas{% endblock %}
+
+{% block extra_head %}
+<style>
+    .container {max-width: 1200px;}
+
+    .vaga-list-item { 
+        width: 100%; 
+        box-sizing: border-box; 
+        border: 1px solid #ddd;
+        padding: 20px 25px; 
+        margin-bottom: 20px; 
+        border-radius: 5px;
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        text-align: left; 
+    }
+    
+    .vaga-list-item:hover {
+        background-color: #f9f9f9;
+    }
+
+    .vaga-info {
+        flex-grow: 1; 
+    }
+
+    .vaga-info h4 {
+        margin-top: 0;
+        margin-bottom: 8px; 
+        font-size: 1.2em;
+    }
+    
+    .vaga-info p {
+        margin: 4px 0; 
+        color: #555;
+    }
+    
+    .vaga-actions {
+        margin-left: 20px; 
+    }
+
+    .candidato-count {
+        display: inline-flex;
+        align-items: center;
+        color: #555;
+        font-style: italic;
+    }
+    .candidato-count i {
+        margin-right: 5px;
+        font-size: 1.1em;
+    }
+
+    /* Ajustes no cabeçalho da lista */
+    .list-header h1 {
+        text-align: left; 
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+        .vaga-list-item {
+            flex-direction: column; 
+            align-items: flex-start; 
+        }
+        .vaga-actions {
+            margin-left: 0;
+            margin-top: 15px; 
+        }
+        .list-header {
+            flex-direction: column; 
+            align-items: flex-start;
+        }
+        .list-header a.btn {
+            margin-top: 10px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="list-header">
+        <h1>Vagas Cadastradas</h1>
+        {% if user.empresa %}
+            <a href="{% url 'vaga-criar' %}" class="btn" style="background-color: #0f9f82ff;">Cadastrar nova vaga</a>
+        {% endif %}
+    </div>
+
+    <div class="vagas-list-container">
+        {% for vaga in vagas %}
+            <div class="vaga-list-item">
+                <div class="vaga-info">
+                    <h4>{{ vaga.nome }}</h4>
+                    <p>Salário: {{ vaga.get_faixa_salarial_display }}</p>
+                    <p>Escolaridade Mínima: {{ vaga.get_escolaridade_minima_display }}</p>
+                    
+                    <div class="candidato-count">
+                        <i title="Candidatos inscritos">👤</i> 
+                        <span>{{ vaga.num_candidatos }}</span>
+                    </div>
+                    
+                </div>
+                <div class="vaga-actions">  
+                    <a href="{% url 'info-vaga' pk=vaga.pk %}" class="btn btn-red" style="padding: 8px 15px;">Ver detalhes</a>
+                </div>
+            </div>
+        {% empty %}
+            <p style="text-align: center;">Nenhuma vaga cadastrada no momento.</p>
+        {% endfor %}
+    </div>
+
+    <div class="form-actions" style="margin-top: 40px; display: flex; justify-content: center; flex-direction: column; align-items: center;">
+        
+  
+        <a href="{% url 'home' %}" class="btn btn-red" style="background-color: #0f9f82ff;">Voltar</a>
+    </div>
+
+{% endblock %}

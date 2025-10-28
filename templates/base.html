@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Senior Vagas{% endblock %}</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 0; background-color: #f4f4f9; display: flex; flex-direction: column; min-height: 100vh; }
+        header { background-color: #0f9f82ff; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        header .logo a { color: white; text-decoration: none; font-weight: bold; font-size: 1.2em; } 
+        nav span, .logout-form button { color: white; text-decoration: none; margin-left: 15px; } 
+        .logout-form button:hover { text-decoration: underline; }
+        .container { 
+            max-width: 800px; 
+            margin: 40px auto; 
+            padding: 30px; 
+            background: white; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+            text-align: center; 
+            flex-grow: 1; 
+        }
+        h1, h2, h3 { color: #333; text-align: center; margin-bottom: 25px; }
+        
+        .btn { background-color: #0f9f82ff; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; display: inline-block; margin: 10px 5px; font-weight: bold; font-size: 1em; transition: background-color 0.2s; }
+        .btn:hover { background-color: #0f9f82ff; }
+        .btn-light { background-color: #f8f9fa; color: #333; border: 1px solid #ccc; }
+        .btn-light:hover { background-color: #e2e6ea; }
+
+        .form-fields { text-align: left; }
+        .form-fields p { margin-bottom: 15px; }
+        .form-fields label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-fields input[type="text"],
+        .form-fields input[type="email"],
+        .form-fields input[type="password"],
+        .form-fields select,
+        .form-fields textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .form-fields textarea { min-height: 100px; }
+        .form-actions { text-align: center; margin-top: 20px; }
+
+        .vaga-card { border: 1px solid #ddd; padding: 20px; margin-bottom: 20px; border-radius: 5px; background: #fff; text-align: left; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .vaga-card h4 { margin-top: 0; }
+  
+        .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .list-header h1 { margin: 0; border: none; padding: 0; text-align: left; }
+
+
+        .logout-form button { background: none; border: none; color: white; cursor: pointer; text-decoration: underline; padding: 0; font-size: inherit; margin-left: 15px; }
+
+    </style>
+    {% block extra_head %}{% endblock %} 
+</head>
+<body>
+<header>
+    <div class="logo">
+        <a href="{% url 'home' %}">
+            <strong>Senior Vagas</strong> 
+        </a>
+    </div>
+    <nav>
+        {% if user.is_authenticated %}
+            <span>Olá, {{ user.first_name|default:user.email }}</span> 
+            
+            <form action="{% url 'logout' %}" method="post" style="display: inline;" class="logout-form">
+                {% csrf_token %}
+                <button type="submit">Sair</button>
+            </form>
+            
+        {% else %}
+        {% endif %}
+    </nav>
+</header>
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if object %}Editar Vaga{% else %}Cadastro de Vaga{% endif %}{% endblock %}
+
+{% block content %}
+    <h2>{% if object %}Editar Vaga: {{ object.nome }}{% else %}Cadastro de Vaga{% endif %}</h2>
+
+    <form method="POST" class="form-fields">
+        {% csrf_token %}
+        {{ form.as_p }} 
+        <div class="form-actions">
+            <button type="submit" class="btn btn-red">
+                {% if object %}Salvar Alterações{% else %}Cadastrar Vaga{% endif %}
+            </button>
+            <a href="{% if object %}{% url 'info-vaga' pk=object.pk %}{% else %}{% url 'vagas-lista' %}{% endif %}" class="btn btn-red" style="background-color: #6c757d;">Voltar</a>
+        </div>
+    </form>
+{% endblock %}

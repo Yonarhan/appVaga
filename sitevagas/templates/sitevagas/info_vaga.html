@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes: {{ vaga.nome }}{% endblock %}
+
+{% block content %}
+    <h2>Detalhes da Vaga: {{ vaga.nome }}</h2>
+    <div style="text-align: left; margin-bottom: 30px;">
+        <p><strong>Empresa:</strong> {{ vaga.empresa.nome_empresa }}</p>
+        <p><strong>Salário:</strong> {{ vaga.get_faixa_salarial_display }}</p>
+        <p><strong>Escolaridade Mínima:</strong> {{ vaga.get_escolaridade_minima_display }}</p>
+        <p><strong>Requisitos:</strong><br>{{ vaga.requisitos|linebreaks }}</p>
+    </div>
+
+    {% if is_candidato_perfil %}
+        {% if ja_aplicou %}
+            <p style="color: green; font-weight: bold;">✅ Você já se candidatou!</p>
+        {% else %}
+            <form action="{% url 'vaga-aplicar' pk=vaga.pk %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-red">Candidatar-se</button>
+            </form>
+        {% endif %}
+    {% endif %}
+
+    {% if is_empresa_dona %}
+        <hr style="margin: 30px 0;">
+        <h3>Candidatos Interessados</h3>
+        {% for candidato in candidatos_na_vaga %}
+            <div class="vaga-card" style="text-align: left;">
+                <h4>{{ candidato.nome_candidato }} (Score: {{ candidato.score_perfil }}/2)</h4>
+                <p>Email: {{ candidato.user.email }}</p>
+                <p>Pretensão: {{ candidato.get_pretensao_salarial_display }}</p>
+                <p>Escolaridade: {{ candidato.get_ultima_escolaridade_display }}</p>
+                <p>Experiência: {{ candidato.experiencia|truncatewords:30 }}</p>
+            </div>
+        {% empty %}
+            <p>Nenhum candidato inscrito ainda.</p>
+        {% endfor %}
+        <hr style="margin: 30px 0;">
+        <a href="{% url 'vaga-editar' pk=vaga.pk %}" class="btn btn-red" style="background-color: #ffc107; ">Editar Vaga</a>
+        <a href="{% url 'vaga-deletar' pk=vaga.pk %}" class="btn btn-red" style="background-color: #ff0707ff; ">Excluir Vaga</a>
+    {% endif %}
+
+    <div class="form-actions">
+        <a href="{% url 'vagas-lista' %}" class="btn btn-red">Voltar</a>
+    </div>
+{% endblock %}
