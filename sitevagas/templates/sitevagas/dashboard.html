@@ -74,6 +74,14 @@
 
       
         fetch(dataUrl)
+                .then(response => {
+                
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar dados do dashboard.');
+                }
+                
+                return response.json();
+            })
             .then(data => {
                 
                 const vagasCtx = document.getElementById('vagasChart').getContext('2d');
