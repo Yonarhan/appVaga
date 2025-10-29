@@ -29,19 +29,17 @@ nome-da-venv\Scripts\activate
 ~~~
 source nome-da-venv/bin/activate
 ~~~
+## Passo 4: Entrar no diretório do projeto
+~~~
+cd.. ou cd nome-da-pasta-do-projeto
 
-## Passo 4: Instalar Dependências
+~~~
+## Passo 5: Instalar Dependências
 
 Com o ambiente virtual ativado, instale as dependências do projeto, incluindo o Django, utilizando o comando:
 ~~~
 pip install -r requirements.txt
 ~~~
-
-## Passo 5: Entrar no diretório do projeto
-~~~
-cd nome-da-pasta-do-projeto
-~~~
-
 ## Passo 6: Criar o banco local da aplicação
 ~~~
 py manage.py makemigrations 
